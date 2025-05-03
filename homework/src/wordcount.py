@@ -1,31 +1,18 @@
 # obtain a list of files in the input directory
-import os
 
-from ._internals.write_counts_words import write_counts_words
-
-
-def read_all_lines():
-    """Read all lines from the input files."""
-    all_lines = []
-    for filename in os.listdir('data/input/'):
-        with open('data/input/' + filename, 'r', encoding='utf-8') as f:
-            all_lines.extend(f.readlines())
-    return all_lines
+from ._internals.count_words import count_words
+from ._internals.preprocess_lines import preprocess_lines
+from ._internals.read_all_lines import read_all_lines
+from ._internals.split_into_words import split_into_words
+from ._internals.write_word_counts import write_word_counts
 
 def main():
-    input_directory_files=os.listdir('data/input/')
+    
+    all_lines = read_all_lines()
+    all_lines = preprocess_lines(all_lines)
+    words = split_into_words(all_lines)
+    counter = count_words(words)
+    write_word_counts(counter)
 
-    # count the frequency of the words in the files in the input directory
-    counter={}
-    for filename in input_directory_files:
-        with open('data/input/'+filename) as f:
-            for l in f:
-                for w in l.split( ):
-                    w = w.lower().strip(",.!?")
-                    counter[w] = counter.get(w, 0) + 1
-
-    # create the directory output/ if it doesn't exist
-    write_counts_words(counter)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
