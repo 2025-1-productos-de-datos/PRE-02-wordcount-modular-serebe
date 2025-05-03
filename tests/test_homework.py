@@ -3,7 +3,6 @@
 import os
 import subprocess
 
-
 def test_homework():
     """Test Word Count"""
 
